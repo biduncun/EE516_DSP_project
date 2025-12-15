@@ -50,6 +50,7 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 model = nn.Sequential(
     nn.Linear(n_bits_ * 4,4),  # First layer: Fully connected with 4 output 
+    #nn.Linear(4,4),
 )
 
 #initialize edge weight to reduce training time
@@ -70,10 +71,12 @@ model[0].weight.data = torch.tensor(initial_weight, dtype=torch.float32)
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 
-epochs = 500
+epochs = 5000
 
 
 outputs = model(inputs)
+
+target_lost = 0.0000000012
 
 #breakpoint()
 
@@ -97,6 +100,8 @@ for epoch in range(epochs):
 
     if (epoch + 1) % 10 == 0:
         print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.10f}")
+        if loss.item() < target_lost:
+            break
 
 
 outputs = model(inputs)
@@ -112,7 +117,7 @@ y = 20*np.log10(signal_fft)
 
 # Create a line plot
 plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.ylabel("Amplitude")          # Label for y-axis
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -129,8 +134,8 @@ x = np.abs(np.fft.fftfreq(2**16)[:signal_fft.shape[0]]) #* sample_rate*4
 y = 20*np.log10(signal_fft)
 
 # Create a line plot
-plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.plot(x, y)  # Label for legend
+plt.ylabel("Amplitude")          # Label for y-axis
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -151,6 +156,6 @@ print("NN output")
 print(f"enob: [{signal_tools.spectrum.compute_enob(NN_output,nfft = 2**simulation_bit)}]")
 print(f"sfdr: [{signal_tools.spectrum.compute_sfdr(NN_output,nfft = 2**simulation_bit)}]")
 print(f"sndr: [{signal_tools.spectrum.compute_sndr(NN_output,nfft = 2**simulation_bit)}]")
-print(f"sndr: [{signal_tools.spectrum.compute_snr(NN_output,nfft = 2**simulation_bit)}]")
+print(f"snr: [{signal_tools.spectrum.compute_snr(NN_output,nfft = 2**simulation_bit)}]")
 
 breakpoint()
