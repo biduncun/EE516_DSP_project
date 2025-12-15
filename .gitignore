@@ -1,2 +1,4 @@
 # Python virtual environment
 venv/
+signal_tools/
+adc_models/
