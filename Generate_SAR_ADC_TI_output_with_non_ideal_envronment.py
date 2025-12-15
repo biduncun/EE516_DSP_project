@@ -18,11 +18,12 @@ sar_non_ideal_3 = adc_models.sar.BinarySingleEnded(n_bits = n_bits_, mode = "non
 sar_non_ideal_4 = adc_models.sar.BinarySingleEnded(n_bits = n_bits_, mode = "nonideal", v_ref = v_ref_)
 
 
-sample_time_percentage = 5 # 5% of the T=1/fs is for sampling or 5%*1/sample_rate_low
 kernal_size = 64 # nuber of bit 
 
 
-sample_rate = 1_000_000 * kernal_size  #for signal gen
+sample_rate = 4* sample_rate_low #for signal gen
+
+
 input_frequency = 51_111
 T_input_frequency = 1/input_frequency
 T_sample = 1/sample_rate 
@@ -37,35 +38,36 @@ phase_shift_2 = 2*T_sample/T_input_frequency*360 + delta_2
 phase_shift_3 = 3*T_sample/T_input_frequency*360 + delta_3
 
 
+breakpoint()
 
 #input to sar-adc 1
-input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit*kernal_size, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2)
+input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2)
 kernal_1 = np.random.uniform(0.5, 1.0, size=kernal_size)/(kernal_size**2)
-x_blocks_1 = input_signals_temp.reshape(-1, kernal_size)
+x_blocks_1 = np.repeat(input_signals_temp[:, None], kernal_size, axis=1)
 y_blocks_1 = np.apply_along_axis(lambda b: np.convolve(b, kernal_1, mode='same'),axis=1,arr=x_blocks_1)
 y_blocks_1_thin = y_blocks_1.sum(axis=1, keepdims=True)
 input_signals_1 = y_blocks_1_thin.reshape(-1)
 
 #input to sar-adc 2
-input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit*kernal_size, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_1)
+input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_1)
 kernal_2 = np.random.uniform(0.5, 1.0, size=kernal_size)/(kernal_size**2)
-x_blocks_1 = input_signals_temp.reshape(-1, kernal_size)
+x_blocks_1 = np.repeat(input_signals_temp[:, None], kernal_size, axis=1)
 y_blocks_1 = np.apply_along_axis(lambda b: np.convolve(b, kernal_2, mode='same'),axis=1,arr=x_blocks_1)
 y_blocks_1_thin = y_blocks_1.sum(axis=1, keepdims=True)
 input_signals_2 = y_blocks_1_thin.reshape(-1)
 
 #input to sar-adc 3
-input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit*kernal_size, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_2)
+input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_2)
 kernal_3 = np.random.uniform(0.5, 1.0, size=kernal_size)/(kernal_size**2)
-x_blocks_1 = input_signals_temp.reshape(-1, kernal_size)
+x_blocks_1 = np.repeat(input_signals_temp[:, None], kernal_size, axis=1)
 y_blocks_1 = np.apply_along_axis(lambda b: np.convolve(b, kernal_3, mode='same'),axis=1,arr=x_blocks_1)
 y_blocks_1_thin = y_blocks_1.sum(axis=1, keepdims=True)
 input_signals_3 = y_blocks_1_thin.reshape(-1)
 
 #input to sar-adc 4
-input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit*kernal_size, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_3)
+input_signals_temp = signal_tools.signal_generator.sine_wave(n_points = 2**simulation_bit, sample_rate = sample_rate,fin = input_frequency, vpp = v_ref_, offset = v_ref_/2,phase=phase_shift_3)
 kernal_4 = np.random.uniform(0.5, 1.0, size=kernal_size)/(kernal_size**2)
-x_blocks_1 = input_signals_temp.reshape(-1, kernal_size)
+x_blocks_1 = np.repeat(input_signals_temp[:, None], kernal_size, axis=1)
 y_blocks_1 = np.apply_along_axis(lambda b: np.convolve(b, kernal_4, mode='same'),axis=1,arr=x_blocks_1)
 y_blocks_1_thin = y_blocks_1.sum(axis=1, keepdims=True)
 input_signals_4 = y_blocks_1_thin.reshape(-1)
@@ -100,7 +102,7 @@ np.save(f"{save_folder}/kernal_4.npy", kernal_4)
 
 
 
-x = input_signals_1[0:kernal_size]
+x = input_signals_1[0:2*sample_rate//input_frequency]
 plt.plot(x, label='Kernal_1')
 plt.title("Visualization Kernal")
 plt.xlabel("Index")
@@ -112,7 +114,7 @@ plt.close()  # Close the plot to free memory
 
 
 
-x = input_signals_2[0:kernal_size]
+x = input_signals_2[0:2*sample_rate//input_frequency]
 plt.plot(x, label='Kernal_2')
 plt.title("Visualization Kernal")
 plt.xlabel("Index")
@@ -122,7 +124,7 @@ plt.grid()
 plt.savefig("Image/TI_ADC_CALIBRATION_WITH_ENV/input_signal_2.png", dpi=300, bbox_inches="tight")
 plt.close()  # Close the plot to free memory
 
-x = input_signals_3[0:kernal_size]
+x = input_signals_3[0:2*sample_rate//input_frequency]
 plt.plot(x, label='Kernal_2')
 plt.title("Visualization Kernal")
 plt.xlabel("Index")
@@ -132,7 +134,7 @@ plt.grid()
 plt.savefig("Image/TI_ADC_CALIBRATION_WITH_ENV/input_signal_3.png", dpi=300, bbox_inches="tight")
 plt.close()  # Close the plot to free memory
 
-x = input_signals_4[0:kernal_size]
+x = input_signals_4[0:2*sample_rate//input_frequency]
 plt.plot(x, label='Kernal_2')
 plt.title("Visualization Kernal")
 plt.xlabel("Index")
