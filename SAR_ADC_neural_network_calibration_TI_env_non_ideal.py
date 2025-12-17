@@ -50,7 +50,7 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 model = nn.Sequential(
     nn.Linear(n_bits_ * 4,4),  # First layer: Fully connected with 4 output 
-    #nn.Linear(4,4),
+    nn.Linear(4,4),
 )
 
 #initialize edge weight to reduce training time
@@ -117,7 +117,8 @@ y = 20*np.log10(signal_fft)
 
 # Create a line plot
 plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Amplitude")          # Label for y-axis
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -135,7 +136,8 @@ y = 20*np.log10(signal_fft)
 
 # Create a line plot
 plt.plot(x, y)  # Label for legend
-plt.ylabel("Amplitude")          # Label for y-axis
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
