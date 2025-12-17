@@ -111,8 +111,9 @@ x = np.abs(np.fft.fftfreq(2**16)[:signal_fft.shape[0]]) #* sample_rate*4
 y = 20*np.log10(signal_fft)
 
 # Create a line plot
-plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.plot(x, y)  # Label for legend
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -129,8 +130,10 @@ x = np.abs(np.fft.fftfreq(2**16)[:signal_fft.shape[0]]) #* sample_rate*4
 y = 20*np.log10(signal_fft)
 
 # Create a line plot
-plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.plot(x, y)  # Label for legend
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
+
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid

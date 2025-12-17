@@ -116,8 +116,9 @@ y = 20*np.log10(signal_fft)
 
 
 # Create a line plot
-plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.plot(x, y)  # Label for legend
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -137,8 +138,9 @@ y = 20*np.log10(signal_fft)
 ##np.save("Quantized_NN_output_FFT.npy",y)
 
 # Create a line plot
-plt.plot(x, y, label="Line")  # Label for legend
-plt.ylabel("Y-axis")          # Label for y-axis
+plt.plot(x, y)  # Label for legend
+plt.ylabel("Magnitude(db)")          # Label for y-axis
+plt.xlabel("Normalized Frequency")
 #plt.title("Simple Line Graph") # Title of the graph
 plt.legend()                   # Show legend
 plt.grid(True)                 # Add grid
@@ -160,4 +162,4 @@ print("NN output")
 print(f"enob: [{signal_tools.spectrum.compute_enob(NN_output,nfft = 2**simulation_bit)}]")
 print(f"sfdr: [{signal_tools.spectrum.compute_sfdr(NN_output,nfft = 2**simulation_bit)}]")
 print(f"sndr: [{signal_tools.spectrum.compute_sndr(NN_output,nfft = 2**simulation_bit)}]")
-print(f"sndr: [{signal_tools.spectrum.compute_snr(NN_output,nfft = 2**simulation_bit)}]")
+print(f"snr: [{signal_tools.spectrum.compute_snr(NN_output,nfft = 2**simulation_bit)}]")

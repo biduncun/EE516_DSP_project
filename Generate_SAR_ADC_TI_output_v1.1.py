@@ -24,9 +24,9 @@ T_sample = 1/sample_rate
 
 
 
-delta_1 = 1  #skew timer 1 in degree
-delta_2 = -2 #sket timer 2
-delta_3 = 2  #sket timer 3
+delta_1 = 2  #skew timer 1 in degree
+delta_2 = -4 #sket timer 2
+delta_3 = 4  #sket timer 3
 
 phase_shift_1 = T_sample/T_input_frequency*360   + delta_1
 phase_shift_2 = 2*T_sample/T_input_frequency*360 + delta_2
